@@ -43,25 +43,6 @@ const readData = () => {
 const countriesData = readData();
 
 
-    // const lines = countries.split('\n');
-
-    // for (const line of lines) {
-    //   const regex = /^(.*?)\s+([\d,]*)\s+([\d,]*)$/;
-    //   const countryDataMatches = line.match(regex);
-
-    //   if (countryDataMatches) {
-    //     const [, country, population, area] = countryDataMatches;
-
-    //     countriesData.push({
-    //       country: country.trim(),
-    //       population: parseInt(population.replace(/,/g, '')),
-    //       area: parseInt(area.replace(/,/g, '')),
-    //     });
-    //   }
-    // }
-
-
-
 //--------------Ordenar
 countriesData.sort((a, b) => b.density - a.density);
 
