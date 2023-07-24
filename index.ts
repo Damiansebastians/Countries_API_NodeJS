@@ -5,6 +5,7 @@ interface CountryData {
   country: string;
   population: number;
   area: number;
+  density?: number
 }
 
 //-------------------------------
@@ -17,18 +18,21 @@ const readData = () => {
     const countriesData: CountryData[] = [];
 
     for (const line of lines) {
-      const [country, population, area] = line.split(' ');
+      const countryDataMatches = line.match(/^(.*?)\s+(\d[\d,]*)\s+(\d[\d,]*)$/);
+      if (countryDataMatches) {
+        const [, country, population, area] = countryDataMatches;
         countriesData.push({
           country: country.trim(),
-          population: parseInt(population),
-          area: parseInt(area),
-      });
+          population: parseInt(population.replace(/,/g, '')),
+          area: parseInt(area.replace(/,/g, '')),
+        });
     }
+  }
     return countriesData;
 
   } catch (e) {
     if (typeof e === 'string') {
-      e.toUpperCase()
+      e
     } else if (e instanceof Error) {
       e.message
     }
@@ -42,15 +46,29 @@ function calculateDensity(countriesData: CountryData[]){
 
   return countriesData.map(countryData => ({
     country: countryData.country,
+    population: countryData.population,
+    area: countryData.area,
     density: countryData.population / countryData.area,
   }));
 }
 
 const densities = calculateDensity(countriesData);
 
+//--------------Ordenar
+densities.sort((a, b) => b.density - a.density);
+
 //---------------------
 densities.forEach(data => {
   console.log(`${data.country}: Density = ${data.density.toFixed(2)} people/km²`);
 });
+
+
+const csvCountries = 'country,population,area,density\n' + densities.map(data => {
+  return `${data.country},${data.population},${data.area},${data.density.toFixed(2)}`;
+}).join('\n');
+
+
+const outPathCountries = path.join(__dirname, 'src/countries.csv');
+fs.writeFileSync(outPathCountries, csvCountries, 'utf-8');
 
 
