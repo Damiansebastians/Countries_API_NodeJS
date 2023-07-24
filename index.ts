@@ -18,9 +18,12 @@ const readData = () => {
     const countriesData: CountryData[] = [];
 
     for (const line of lines) {
-      const countryDataMatches = line.match(/^(.*?)\s+(\d[\d,]*)\s+(\d[\d,]*)$/);
+      const regex = /^(.*?)\s+([\d,]*)\s+([\d,]*)$/;
+      const countryDataMatches = line.match(regex);
+
       if (countryDataMatches) {
         const [, country, population, area] = countryDataMatches;
+
         countriesData.push({
           country: country.trim(),
           population: parseInt(population.replace(/,/g, '')),

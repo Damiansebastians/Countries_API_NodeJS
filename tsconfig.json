@@ -109,5 +109,5 @@
   },
   "include": [
     "src/**/*"
-, "app.ts", "index.ts"  ]
+, "app.ts", "index.ts", "index2.ts"  ]
 }
